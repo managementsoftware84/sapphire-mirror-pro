@@ -44,6 +44,11 @@ interface Demo {
 
 
 const Index = () => {
+  const { data: catalog } = useSuspenseQuery(catalogPublicQuery());
+  const allDemos: Demo[] = useMemo(() => catalog.products.map(toViewDemo), [catalog.products]);
+  const masterCategories = useMemo(() => ["All", ...catalog.categories.map((c) => c.name)], [catalog.categories]);
+  const activeCount = useMemo(() => allDemos.filter((d) => d.status === "ACTIVE").length, [allDemos]);
+
   const [activeCategory, setActiveCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
   const [favorites, setFavorites] = useState<string[]>([]);
