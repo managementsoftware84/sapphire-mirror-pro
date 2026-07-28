@@ -63,7 +63,7 @@ const HeroCarousel = () => {
           <span className="flex items-center gap-1.5"><Clock className="h-3.5 w-3.5 text-cyan-300 drop-shadow" /> 2-Hour Delivery</span>
           <span className="flex items-center gap-1.5"><BadgeCheck className="h-3.5 w-3.5 text-amber-300 drop-shadow" /> No Hidden Charges</span>
           <span className="flex items-center gap-1.5"><Lock className="h-3.5 w-3.5 text-rose-300 drop-shadow" /> Trademark Protected</span>
-          <span className="flex items-center gap-1.5"><Boxes className="h-3.5 w-3.5 text-violet-300 drop-shadow" /> 204+ Solutions</span>
+          <span className="flex items-center gap-1.5"><Boxes className="h-3.5 w-3.5 text-violet-300 drop-shadow" /> 250 Solutions</span>
           <span className="flex items-center gap-1.5"><Zap className="h-3.5 w-3.5 text-fuchsia-300 drop-shadow" /> 20 Live Demos</span>
           <span className="flex items-center gap-1.5"><Globe2 className="h-3.5 w-3.5 text-sky-300 drop-shadow" /> Global Support</span>
         </div>
