@@ -1,24 +1,26 @@
 import { createFileRoute } from "@tanstack/react-router";
+import HomeIndex from "@/components/HomeIndex";
+import { Toaster } from "sonner";
+import { heroPublicQuery } from "@/lib/marketplace-content/heroQueries";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
 export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      { title: "Software Vala — 147 Software Solutions" },
+      { name: "description", content: "Software Vala: 20 master categories and 147 software products with live demos. The Name of Trust." },
+      { property: "og:title", content: "Software Vala — 147 Software Solutions" },
+      { property: "og:description", content: "20 master categories, 147 products, 20 live demos. Lifetime access." },
+    ],
+  }),
+  loader: ({ context }) => context.queryClient.ensureQueryData(heroPublicQuery()),
   component: Index,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
 function Index() {
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
+    <>
+      <HomeIndex />
+      <Toaster position="top-right" richColors />
+    </>
   );
 }
