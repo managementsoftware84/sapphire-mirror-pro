@@ -1,18 +1,9 @@
-import { useState } from "react";
-
-import { motion } from "framer-motion";
-import { toast } from "sonner";
-import { 
-  Play, Heart, ShoppingCart, Filter, Search, Bell,
-  GraduationCap, Stethoscope, Utensils, Hotel, Home, Car, Plane,
-  CreditCard, Factory, Users, Truck, Building, BookOpen, FlaskConical,
-  Phone, Pill, Package, MapPin, Star, Award, CheckCircle, Wallet, Landmark,
-  FileText, Calculator, Receipt, PieChart, ClipboardCheck, Coins, Target,
-  TrendingUp, Megaphone, Share2, Mail, Zap, BarChart3, UserCheck, DollarSign,
-  Clock, Calendar, Briefcase, UserCog, Fingerprint, ShoppingBag, Store, Globe,
-  Headphones, MessageSquare, Scale, Shield, Lock, Server, Cpu, Database,
-  Wifi, Camera, Key, AlertTriangle, HardDrive, Eye, Radio, PhoneCall,
-  Mic, MonitorPlay, FileCheck, Gavel, ScrollText, Vote, Building2, Lightbulb, Code2
+import {
+  Play, Heart, ShoppingCart, Search, Bell,
+  Star, Award, CheckCircle,
+  Clock, Briefcase,
+  Shield, Lock,
+  Eye, Megaphone, Code2
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -26,7 +17,8 @@ import {
   IndustryGrid, AIZone, SuccessStories, AwardsRow, LiveActivity,
   ValaTV, Academy as ValaAcademy, PartnerEcosystem, FaqSection, EnterpriseCTA,
 } from "@/components/marketplace/RefSections";
-import { extraDemos, allMasterCategories55 } from "@/data/extraDemos";
+import { catalogPublicQuery } from "@/lib/catalog/catalogQueries";
+import { toViewDemo } from "@/lib/catalog/productIcons";
 
 interface Demo {
   id: string;
