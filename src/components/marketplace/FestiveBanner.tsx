@@ -12,7 +12,7 @@ function getFestive(month: number) {
     10: { name: "Black Friday", discount: "Flat 70% OFF", text: "Biggest sale of the year!", gradient: "from-gray-800 via-gray-900 to-black" },
     11: { name: "Christmas Sale", discount: "Flat 45% OFF", text: "Holiday special!", gradient: "from-red-500 via-red-600 to-green-600" },
   };
-  return f[month] ?? { name: "Mega Software Sale", discount: "Flat 40% OFF", text: "Lifetime access on all 147 products!", gradient: "from-amber-500 via-orange-500 to-red-500" };
+  return f[month] ?? { name: "Mega Software Sale", discount: "Flat 40% OFF", text: "Lifetime access on all 250 products!", gradient: "from-amber-500 via-orange-500 to-red-500" };
 }
 
 const FestiveBanner = () => {
