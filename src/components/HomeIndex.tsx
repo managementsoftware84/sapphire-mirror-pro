@@ -1,3 +1,8 @@
+import { useMemo, useState } from "react";
+
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { motion } from "framer-motion";
+import { toast } from "sonner";
 import {
   Play, Heart, ShoppingCart, Search, Bell,
   Star, Award, CheckCircle,
