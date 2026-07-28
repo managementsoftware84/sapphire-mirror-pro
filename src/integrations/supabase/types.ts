@@ -74,6 +74,101 @@ export type Database = {
         }
         Relationships: []
       }
+      master_categories: {
+        Row: {
+          created_at: string
+          name: string
+          position: number
+          updated_at: string
+          visible: boolean
+        }
+        Insert: {
+          created_at?: string
+          name: string
+          position?: number
+          updated_at?: string
+          visible?: boolean
+        }
+        Update: {
+          created_at?: string
+          name?: string
+          position?: number
+          updated_at?: string
+          visible?: boolean
+        }
+        Relationships: []
+      }
+      products: {
+        Row: {
+          backend: string[]
+          category: string
+          color: string
+          created_at: string
+          description: string
+          discount_price: string
+          features: string[]
+          frontend: string[]
+          icon_name: string
+          id: string
+          master_category: string
+          name: string
+          position: number
+          price: string
+          status: string
+          updated_at: string
+          url: string
+          visible: boolean
+        }
+        Insert: {
+          backend?: string[]
+          category: string
+          color?: string
+          created_at?: string
+          description: string
+          discount_price: string
+          features?: string[]
+          frontend?: string[]
+          icon_name: string
+          id: string
+          master_category: string
+          name: string
+          position?: number
+          price: string
+          status?: string
+          updated_at?: string
+          url?: string
+          visible?: boolean
+        }
+        Update: {
+          backend?: string[]
+          category?: string
+          color?: string
+          created_at?: string
+          description?: string
+          discount_price?: string
+          features?: string[]
+          frontend?: string[]
+          icon_name?: string
+          id?: string
+          master_category?: string
+          name?: string
+          position?: number
+          price?: string
+          status?: string
+          updated_at?: string
+          url?: string
+          visible?: boolean
+        }
+        Relationships: [
+          {
+            foreignKeyName: "products_master_category_fkey"
+            columns: ["master_category"]
+            isOneToOne: false
+            referencedRelation: "master_categories"
+            referencedColumns: ["name"]
+          },
+        ]
+      }
       user_roles: {
         Row: {
           created_at: string
