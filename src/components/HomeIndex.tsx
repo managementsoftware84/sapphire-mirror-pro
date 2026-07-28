@@ -155,7 +155,7 @@ const Index = () => {
             transition={{ duration: 0.6 }}
           >
             <Badge className="bg-cyan-500/20 text-cyan-400 border-cyan-500/30 mb-4">
-              <Star className="h-3 w-3 mr-1" /> 55 Master Categories • {allDemos.length} Software Solutions • 20 Live Demos
+              <Star className="h-3 w-3 mr-1" /> {masterCategories.length - 1} Master Categories • {allDemos.length} Software Solutions • {activeCount} Live Demos
             </Badge>
             <div className="flex flex-wrap justify-center gap-4 mb-8">
               <div className="flex items-center gap-2 text-emerald-400">
@@ -262,7 +262,7 @@ const Index = () => {
       <footer className="bg-[#0a1628] border-t border-cyan-500/20 py-8 px-4">
         <div className="max-w-7xl mx-auto text-center">
           <p className="text-gray-400">© 2024 Software Vala - The Name of Trust. All rights reserved.</p>
-          <p className="text-cyan-400 mt-2">55 Master Categories • {allDemos.length} Software Solutions • 20 Live Demos Ready</p>
+          <p className="text-cyan-400 mt-2">{masterCategories.length - 1} Master Categories • {allDemos.length} Software Solutions • {activeCount} Live Demos Ready</p>
         </div>
       </footer>
     </div>
