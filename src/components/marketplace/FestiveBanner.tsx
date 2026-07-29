@@ -9,7 +9,7 @@ function getFestive(month: number) {
     3: { name: "Spring Sale", discount: "Flat 35% OFF", text: "Fresh deals for your business!", gradient: "from-green-500 via-emerald-500 to-teal-500" },
     7: { name: "Independence Day Sale", discount: "Flat 50% OFF", text: "Freedom to choose!", gradient: "from-orange-500 via-white to-green-500" },
     9: { name: "Diwali Mega Sale", discount: "Flat 60% OFF", text: "Festival of lights & deals!", gradient: "from-amber-500 via-orange-500 to-red-500" },
-    10: { name: "Black Friday", discount: "Flat 70% OFF", text: "Biggest sale of the year!", gradient: "from-gray-800 via-gray-900 to-black" },
+    10: { name: "Black Friday", discount: "Flat 70% OFF", text: "Biggest sale of the year!", gradient: "from-fuchsia-600 via-purple-700 to-indigo-800" },
     11: { name: "Christmas Sale", discount: "Flat 45% OFF", text: "Holiday special!", gradient: "from-red-500 via-red-600 to-green-600" },
   };
   return f[month] ?? { name: "Mega Software Sale", discount: "Flat 40% OFF", text: "Lifetime access on all 250 products!", gradient: "from-amber-500 via-orange-500 to-red-500" };
