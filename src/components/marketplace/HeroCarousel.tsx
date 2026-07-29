@@ -69,7 +69,7 @@ const HeroCarousel = () => {
         </div>
       </div>
 
-      <AnimatePresence initial={false} custom={direction}>
+      <AnimatePresence mode="wait" initial={false} custom={direction}>
         <motion.div
           key={product.id}
           custom={direction}
@@ -78,12 +78,12 @@ const HeroCarousel = () => {
           animate="center"
           exit="exit"
           transition={{
-            x: { type: "spring", stiffness: 140, damping: 24, mass: 0.9 },
-            opacity: { duration: 0.55, ease: [0.22, 1, 0.36, 1] },
-            scale: { duration: 0.7, ease: [0.22, 1, 0.36, 1] },
-            filter: { duration: 0.5, ease: "easeOut" },
+            x: { type: "spring", stiffness: 180, damping: 26, mass: 0.7 },
+            opacity: { duration: 0.4, ease: [0.22, 1, 0.36, 1] },
+            scale: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
+            filter: { duration: 0.35, ease: "easeOut" },
           }}
-          className={`relative w-full bg-gradient-to-br ${product.gradient} py-20 sm:py-24 lg:py-32 ${current === 0 ? "" : "absolute inset-0"}`}
+          className={`relative w-full bg-gradient-to-br ${product.gradient} py-20 sm:py-24 lg:py-32`}
           style={{ transformStyle: "preserve-3d", willChange: "transform, opacity, filter" }}
         >
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.3),transparent_55%)]" />
