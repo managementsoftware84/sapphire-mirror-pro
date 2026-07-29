@@ -1,9 +1,9 @@
-import { useRef, useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { motion, useAnimationFrame, useMotionValue } from "framer-motion";
 import {
   Sparkles, GraduationCap, Stethoscope, Utensils, Hotel, Home, Car, Plane,
   CreditCard, Factory, Users, Truck, Building, Megaphone, Wallet, Briefcase,
-  ShoppingBag, Scale, Shield, Server, Headphones, Building2, ChevronLeft, ChevronRight
+  ShoppingBag, Scale, Shield, Server, Headphones, Building2
 } from "lucide-react";
 
 const CATEGORIES = [
@@ -32,52 +32,40 @@ const CATEGORIES = [
 ];
 
 const CategorySlider = () => {
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const [canScrollLeft, setCanScrollLeft] = useState(false);
-  const [canScrollRight, setCanScrollRight] = useState(true);
-  const [isDragging, setIsDragging] = useState(false);
-  const [startX, setStartX] = useState(0);
-  const [scrollLeft, setScrollLeft] = useState(0);
+  // Butter-smooth GPU marquee: duplicate items, animate a single translateX,
+  // wrap when the first copy has fully scrolled off.
+  const trackRef = useRef<HTMLDivElement>(null);
+  const x = useMotionValue(0);
+  const [halfWidth, setHalfWidth] = useState(0);
   const [paused, setPaused] = useState(false);
+  const SPEED = 40; // px per second
 
-  const checkScroll = () => {
-    const el = scrollRef.current;
+  useLayoutEffect(() => {
+    const el = trackRef.current;
     if (!el) return;
-    setCanScrollLeft(el.scrollLeft > 5);
-    setCanScrollRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 5);
-  };
-
-  useEffect(() => {
-    const el = scrollRef.current;
-    if (!el) return;
-    el.addEventListener("scroll", checkScroll);
-    checkScroll();
-    return () => el.removeEventListener("scroll", checkScroll);
+    const measure = () => setHalfWidth(el.scrollWidth / 2);
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    return () => ro.disconnect();
   }, []);
 
-  useEffect(() => {
-    const el = scrollRef.current;
-    if (!el) return;
-    let dir = 1;
-    let raf = 0;
-    let last = performance.now();
-    const speed = 40; // px/sec — silky continuous marquee
-    const tick = (now: number) => {
-      const dt = (now - last) / 1000;
-      last = now;
-      if (!isDragging && !paused) {
-        const max = el.scrollWidth - el.clientWidth;
-        if (el.scrollLeft >= max - 2) dir = -1;
-        else if (el.scrollLeft <= 2) dir = 1;
-        el.scrollLeft += dir * speed * dt;
-      }
-      raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, [isDragging, paused]);
+  useAnimationFrame((_, delta) => {
+    if (paused || halfWidth <= 0) return;
+    const next = x.get() - (SPEED * delta) / 1000;
+    x.set(next <= -halfWidth ? next + halfWidth : next);
+  });
 
-  const scroll = (dir: number) => scrollRef.current?.scrollBy({ left: dir * 240, behavior: "smooth" });
+  // Respect reduced-motion.
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const apply = () => setPaused(mq.matches);
+    apply();
+    mq.addEventListener("change", apply);
+    return () => mq.removeEventListener("change", apply);
+  }, []);
+
+  const items = [...CATEGORIES, ...CATEGORIES];
 
   return (
     <section
@@ -85,40 +73,31 @@ const CategorySlider = () => {
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
-      <div className="max-w-7xl mx-auto px-4 relative" style={{ perspective: 1000 }}>
-        {canScrollLeft && (
-          <button onClick={() => scroll(-1)} className="absolute left-2 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white hover:bg-white/20 transition-all shadow-xl border border-white/20">
-            <ChevronLeft className="w-5 h-5" />
-          </button>
-        )}
-        {canScrollRight && (
-          <button onClick={() => scroll(1)} className="absolute right-2 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white hover:bg-white/20 transition-all shadow-xl border border-white/20">
-            <ChevronRight className="w-5 h-5" />
-          </button>
-        )}
-
-        <div
-          ref={scrollRef}
-          onMouseDown={(e) => { setIsDragging(true); setStartX(e.pageX - (scrollRef.current?.offsetLeft || 0)); setScrollLeft(scrollRef.current?.scrollLeft || 0); }}
-          onMouseMove={(e) => { if (!isDragging) return; e.preventDefault(); const x = e.pageX - (scrollRef.current?.offsetLeft || 0); if (scrollRef.current) scrollRef.current.scrollLeft = scrollLeft - (x - startX) * 1.5; }}
-          onMouseUp={() => setIsDragging(false)}
-          className="flex gap-3 overflow-x-auto scrollbar-hide cursor-grab active:cursor-grabbing px-10 py-3"
-          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+      <div
+        className="relative overflow-hidden px-4"
+        style={{
+          perspective: 1000,
+          maskImage:
+            "linear-gradient(to right, transparent 0, black 6%, black 94%, transparent 100%)",
+          WebkitMaskImage:
+            "linear-gradient(to right, transparent 0, black 6%, black 94%, transparent 100%)",
+        }}
+      >
+        <motion.div
+          ref={trackRef}
+          style={{ x, willChange: "transform" }}
+          className="flex gap-3 py-3 w-max"
         >
-          {CATEGORIES.map((cat, i) => {
+          {items.map((cat, i) => {
             const Icon = cat.icon;
             return (
               <a
-                key={cat.name}
+                key={`${cat.name}-${i}`}
                 href={cat.link}
-                onClick={(e) => isDragging && e.preventDefault()}
                 className="flex-shrink-0"
                 style={{ transformStyle: "preserve-3d" }}
               >
                 <motion.div
-                  initial={{ opacity: 0, y: 20, rotateX: -30 }}
-                  animate={{ opacity: 1, y: 0, rotateX: 0 }}
-                  transition={{ delay: i * 0.04, type: "spring", stiffness: 200 }}
                   whileHover={{ scale: 1.08, y: -4, rotateX: 8, rotateY: -8 }}
                   whileTap={{ scale: 0.96 }}
                   className={`relative flex items-center gap-2 px-5 py-3 rounded-2xl bg-gradient-to-br ${cat.color} text-white text-sm font-bold whitespace-nowrap shadow-[0_10px_30px_-8px_rgba(0,0,0,0.5)] hover:shadow-[0_20px_40px_-8px_rgba(0,0,0,0.6)] transition-shadow border border-white/25`}
@@ -133,7 +112,7 @@ const CategorySlider = () => {
               </a>
             );
           })}
-        </div>
+        </motion.div>
       </div>
     </section>
   );
