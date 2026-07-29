@@ -45,9 +45,9 @@ const HeroCarousel = () => {
   const Icon = ICONS[product.icon_name] ?? Boxes;
 
   const variants = {
-    enter: (d: number) => ({ x: d > 0 ? 220 : -220, opacity: 0, scale: 0.96, filter: "blur(6px)" }),
+    enter: (d: number) => ({ x: d > 0 ? 120 : -120, opacity: 0, scale: 0.985, filter: "blur(3px)" }),
     center: { x: 0, opacity: 1, scale: 1, filter: "blur(0px)" },
-    exit: (d: number) => ({ x: d > 0 ? -220 : 220, opacity: 0, scale: 0.96, filter: "blur(6px)" }),
+    exit: (d: number) => ({ x: d > 0 ? -120 : 120, opacity: 0, scale: 0.985, filter: "blur(3px)" }),
   };
 
   return (
