@@ -14,7 +14,7 @@ const CATEGORIES = [
   { icon: ShoppingBag, name: "Retail & POS", color: "from-amber-500 to-orange-600", link: "/#Retail%20%26%20POS" },
   { icon: Hotel, name: "Hotel & Hospitality", color: "from-fuchsia-500 to-pink-600" , link: "/#Hospitality" },
   { icon: Home, name: "Real Estate", color: "from-amber-500 to-yellow-600", link: "/#Real%20Estate" },
-  { icon: Car, name: "Automotive", color: "from-slate-500 to-zinc-700", link: "/#Automotive" },
+  { icon: Car, name: "Automotive", color: "from-red-500 to-orange-600", link: "/#Automotive" },
   { icon: Plane, name: "Travel", color: "from-sky-500 to-cyan-600", link: "/#Travel" },
   { icon: CreditCard, name: "Finance", color: "from-emerald-500 to-teal-600", link: "/#Finance" },
   { icon: Wallet, name: "Accounting", color: "from-lime-500 to-green-600", link: "/#Accounting" },
@@ -22,12 +22,12 @@ const CATEGORIES = [
   { icon: Users, name: "Sales & CRM", color: "from-violet-500 to-purple-600", link: "/#Sales%20%26%20CRM" },
   { icon: Briefcase, name: "HR", color: "from-indigo-500 to-blue-600", link: "/#HR" },
   { icon: Truck, name: "Logistics", color: "from-cyan-500 to-teal-600", link: "/#Logistics" },
-  { icon: Factory, name: "Manufacturing", color: "from-stone-500 to-neutral-700", link: "/#Manufacturing" },
+  { icon: Factory, name: "Manufacturing", color: "from-blue-500 to-cyan-600", link: "/#Manufacturing" },
   { icon: Building, name: "Enterprise", color: "from-blue-600 to-indigo-800", link: "/#Enterprise" },
   { icon: Building2, name: "Government", color: "from-emerald-600 to-green-800", link: "/#Government" },
   { icon: Scale, name: "Legal", color: "from-yellow-600 to-amber-800", link: "/#Legal" },
   { icon: Shield, name: "Security", color: "from-red-600 to-rose-800", link: "/#Security" },
-  { icon: Server, name: "IT & SaaS", color: "from-gray-500 to-slate-700", link: "/#IT" },
+  { icon: Server, name: "IT & SaaS", color: "from-cyan-500 to-blue-700", link: "/#IT" },
   { icon: Headphones, name: "Support", color: "from-teal-500 to-cyan-700", link: "/#Support" },
 ];
 
@@ -59,13 +59,22 @@ const CategorySlider = () => {
     const el = scrollRef.current;
     if (!el) return;
     let dir = 1;
-    const timer = setInterval(() => {
-      if (isDragging || paused) return;
-      if (el.scrollLeft >= el.scrollWidth - el.clientWidth - 5) dir = -1;
-      if (el.scrollLeft <= 5) dir = 1;
-      el.scrollBy({ left: dir * 1, behavior: "auto" });
-    }, 25);
-    return () => clearInterval(timer);
+    let raf = 0;
+    let last = performance.now();
+    const speed = 40; // px/sec — silky continuous marquee
+    const tick = (now: number) => {
+      const dt = (now - last) / 1000;
+      last = now;
+      if (!isDragging && !paused) {
+        const max = el.scrollWidth - el.clientWidth;
+        if (el.scrollLeft >= max - 2) dir = -1;
+        else if (el.scrollLeft <= 2) dir = 1;
+        el.scrollLeft += dir * speed * dt;
+      }
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
   }, [isDragging, paused]);
 
   const scroll = (dir: number) => scrollRef.current?.scrollBy({ left: dir * 240, behavior: "smooth" });

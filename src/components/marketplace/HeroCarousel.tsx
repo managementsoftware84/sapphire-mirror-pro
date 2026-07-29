@@ -45,9 +45,9 @@ const HeroCarousel = () => {
   const Icon = ICONS[product.icon_name] ?? Boxes;
 
   const variants = {
-    enter: (d: number) => ({ x: d > 0 ? 400 : -400, opacity: 0, rotateY: d > 0 ? 25 : -25, scale: 0.9 }),
-    center: { x: 0, opacity: 1, rotateY: 0, scale: 1 },
-    exit: (d: number) => ({ x: d > 0 ? -400 : 400, opacity: 0, rotateY: d > 0 ? -25 : 25, scale: 0.9 }),
+    enter: (d: number) => ({ x: d > 0 ? 220 : -220, opacity: 0, scale: 0.96, filter: "blur(6px)" }),
+    center: { x: 0, opacity: 1, scale: 1, filter: "blur(0px)" },
+    exit: (d: number) => ({ x: d > 0 ? -220 : 220, opacity: 0, scale: 0.96, filter: "blur(6px)" }),
   };
 
   return (
@@ -77,7 +77,7 @@ const HeroCarousel = () => {
           initial="enter"
           animate="center"
           exit="exit"
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1] }}
           className={`relative w-full bg-gradient-to-br ${product.gradient} py-20 sm:py-24 lg:py-32`}
           style={{ transformStyle: "preserve-3d" }}
         >
