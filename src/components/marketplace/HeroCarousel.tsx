@@ -45,9 +45,9 @@ const HeroCarousel = () => {
   const Icon = ICONS[product.icon_name] ?? Boxes;
 
   const variants = {
-    enter: (d: number) => ({ x: d > 0 ? 220 : -220, opacity: 0, scale: 0.96, filter: "blur(6px)" }),
+    enter: (d: number) => ({ x: d > 0 ? 120 : -120, opacity: 0, scale: 0.985, filter: "blur(3px)" }),
     center: { x: 0, opacity: 1, scale: 1, filter: "blur(0px)" },
-    exit: (d: number) => ({ x: d > 0 ? -220 : 220, opacity: 0, scale: 0.96, filter: "blur(6px)" }),
+    exit: (d: number) => ({ x: d > 0 ? -120 : 120, opacity: 0, scale: 0.985, filter: "blur(3px)" }),
   };
 
   return (
@@ -69,7 +69,7 @@ const HeroCarousel = () => {
         </div>
       </div>
 
-      <AnimatePresence mode="wait" custom={direction}>
+      <AnimatePresence mode="wait" initial={false} custom={direction}>
         <motion.div
           key={product.id}
           custom={direction}
@@ -77,9 +77,14 @@ const HeroCarousel = () => {
           initial="enter"
           animate="center"
           exit="exit"
-          transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1] }}
+          transition={{
+            x: { type: "spring", stiffness: 180, damping: 26, mass: 0.7 },
+            opacity: { duration: 0.4, ease: [0.22, 1, 0.36, 1] },
+            scale: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
+            filter: { duration: 0.35, ease: "easeOut" },
+          }}
           className={`relative w-full bg-gradient-to-br ${product.gradient} py-20 sm:py-24 lg:py-32`}
-          style={{ transformStyle: "preserve-3d" }}
+          style={{ transformStyle: "preserve-3d", willChange: "transform, opacity, filter" }}
         >
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.3),transparent_55%)]" />
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_80%,rgba(0,0,0,0.45),transparent_55%)]" />
