@@ -31,43 +31,7 @@ import { Card, EmptyHint, PageHeader, PillButton, StatCard, SubNav, SectionRow }
 import { TableToolbar, RowActions, BulkActionBar } from "../actions";
 
 export { HeroBannerSection } from "./HeroBannerSection";
-
-
-// ---------- CATEGORY MANAGER ----------
-const CATS = [
-  "ERP","CRM","HRMS","POS","School","Hospital","Hotel","Restaurant","Banquet","Real Estate",
-  "Transport","Inventory","Accounting","Manufacturing","AI","Ecommerce","Construction","Pharmacy","NGO","Society"
-];
-export function CategoriesSection() {
-  return (
-    <div className="px-4 py-8 md:px-8">
-      <PageHeader
-        eyebrow="Category Manager · 20 verticals"
-        title="Categories"
-        description="Re-order, hide, theme and SEO-tune every vertical on the storefront."
-        actions={<PillButton variant="primary"><span className="inline-flex items-center gap-1.5"><Plus className="h-3.5 w-3.5" /> New Category</span></PillButton>}
-      />
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        {CATS.map((c, i) => (
-          <div key={c} className="glass group flex items-center justify-between rounded-xl p-3">
-            <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-primary/30 to-accent/30 text-sm font-bold text-accent">
-                {c.slice(0,2)}
-              </div>
-              <div>
-                <div className="text-sm font-semibold">{c}</div>
-                <div className="text-[11px] text-muted-foreground">Rank #{i + 1} · Visible</div>
-              </div>
-            </div>
-            <button className="opacity-0 transition-opacity group-hover:opacity-100">
-              <Edit3 className="h-4 w-4 text-muted-foreground hover:text-foreground" />
-            </button>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
+export { CategoryManagerSection as CategoriesSection } from "./CategoryManagerSection";
 
 // ---------- WALL MANAGER ----------
 const WALL_LIST = [
