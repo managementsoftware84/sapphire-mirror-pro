@@ -42,6 +42,9 @@ export const categoryUpsertSchema = z.object({
   name: z.string().min(1).max(120),
   position: z.number().int().nonnegative(),
   visible: z.boolean(),
+  icon_name: z.string().min(1).max(60),
+  gradient: z.string().min(1).max(160),
+  featured: z.boolean(),
 });
 
 export const productDeleteSchema = z.object({ id: z.string().min(1) });
