@@ -3,7 +3,7 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { catalogPublicQuery } from "@/lib/catalog/catalogQueries";
 import { PRODUCT_ICONS } from "@/lib/catalog/productIcons";
 import {
-  Sparkles, GraduationCap, Hospital, Hotel, ShoppingBag, Wrench, Factory,
+  Sparkles, GraduationCap, ShoppingBag, Wrench,
   Trophy, Award, BookOpen, Handshake, ChevronRight, Star,
   Activity, Download, ShoppingCart, Brain, Bot, Search as SearchIcon,
   Zap, ShieldCheck, Globe2, Building2, ArrowRight, Quote, Play, HelpCircle,
