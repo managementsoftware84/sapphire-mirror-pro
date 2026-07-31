@@ -239,6 +239,17 @@
   .mm-theme .scrollbar-thin::-webkit-scrollbar-thumb { background: oklch(1 0 0 / 10%); border-radius: 999px; }
   .mm-theme .mp-hide-scrollbar::-webkit-scrollbar { display: none; }
   .mm-theme .mp-hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  .mm-theme .mm-input {
+    width: 100%;
+    border-radius: 0.6rem;
+    border: 1px solid var(--border);
+    background: color-mix(in oklab, var(--surface-2) 80%, transparent);
+    padding: 0.5rem 0.7rem;
+    font-size: 0.8125rem;
+    color: inherit;
+    outline: none;
+  }
+  .mm-theme .mm-input:focus { border-color: color-mix(in oklab, var(--accent, oklch(0.7 0.15 220)) 70%, transparent); }
 }
 
 @utility glass-strong {

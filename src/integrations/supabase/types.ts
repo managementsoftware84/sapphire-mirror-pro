@@ -77,6 +77,9 @@ export type Database = {
       master_categories: {
         Row: {
           created_at: string
+          featured: boolean
+          gradient: string
+          icon_name: string
           name: string
           position: number
           updated_at: string
@@ -84,6 +87,9 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          featured?: boolean
+          gradient?: string
+          icon_name?: string
           name: string
           position?: number
           updated_at?: string
@@ -91,6 +97,9 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          featured?: boolean
+          gradient?: string
+          icon_name?: string
           name?: string
           position?: number
           updated_at?: string

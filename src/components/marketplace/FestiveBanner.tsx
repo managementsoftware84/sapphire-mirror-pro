@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, PartyPopper, Tag } from "lucide-react";
 
@@ -17,7 +17,10 @@ function getFestive(month: number) {
 
 const FestiveBanner = () => {
   const [dismissed, setDismissed] = useState(false);
-  const offer = getFestive(new Date().getMonth());
+  // Month is resolved after mount so SSR and client markup match (server TZ can differ).
+  const [month, setMonth] = useState<number | null>(null);
+  useEffect(() => setMonth(new Date().getMonth()), []);
+  const offer = getFestive(month ?? -1);
   if (dismissed) return null;
 
   return (

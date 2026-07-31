@@ -1,6 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { catalogPublicQuery } from "@/lib/catalog/catalogQueries";
+import { PRODUCT_ICONS } from "@/lib/catalog/productIcons";
 import {
-  Sparkles, GraduationCap, Hospital, Hotel, ShoppingBag, Wrench, Factory,
+  Sparkles, GraduationCap, ShoppingBag, Wrench,
   Trophy, Award, BookOpen, Handshake, ChevronRight, Star,
   Activity, Download, ShoppingCart, Brain, Bot, Search as SearchIcon,
   Zap, ShieldCheck, Globe2, Building2, ArrowRight, Quote, Play, HelpCircle,
@@ -23,30 +26,52 @@ const sectionTitle = (title: string, href?: string, subtitle?: string) => (
   </div>
 );
 
-// Shop by Industry
-const INDUSTRIES = [
-  { name: "Education", href: "#Education", icon: GraduationCap, color: "from-cyan-500/20 to-blue-500/10", text: "text-cyan-300", count: 24 },
-  { name: "Healthcare", href: "#Healthcare", icon: Hospital, color: "from-rose-500/20 to-pink-500/10", text: "text-rose-300", count: 18 },
-  { name: "Hospitality", href: "#Hospitality%20(Hotel,%20Restaurant,%20Travel)", icon: Hotel, color: "from-amber-500/20 to-orange-500/10", text: "text-amber-300", count: 12 },
-  { name: "E-commerce", href: "#E-commerce%20%26%20Online%20Marketplaces", icon: ShoppingBag, color: "from-fuchsia-500/20 to-purple-500/10", text: "text-fuchsia-300", count: 15 },
-  { name: "Services", href: "#Customer%20Support%20%26%20Helpdesk", icon: Wrench, color: "from-emerald-500/20 to-teal-500/10", text: "text-emerald-300", count: 22 },
-  { name: "Manufacturing", href: "#Manufacturing", icon: Factory, color: "from-violet-500/20 to-indigo-500/10", text: "text-violet-300", count: 14 },
-];
+// Shop by Industry — fully managed from the Marketplace Manager (master_categories + products).
+export const IndustryGrid = () => {
+  const { data } = useSuspenseQuery(catalogPublicQuery());
 
-export const IndustryGrid = () => (
-  <section className="py-8">
-    {sectionTitle("Shop by Industry", "#All", "Pre-built suites for every sector")}
-    <div className="grid grid-cols-2 gap-4 px-6 sm:grid-cols-3 lg:grid-cols-6">
-      {INDUSTRIES.map((i) => (
-        <a key={i.name} href={i.href} className={`group relative overflow-hidden rounded-xl border border-white/[0.07] bg-gradient-to-br ${i.color} p-4 transition-all hover:-translate-y-1 hover:border-cyan-400/40 hover:shadow-[0_18px_40px_-18px_rgba(34,211,238,0.5)]`}>
-          <i.icon className={`h-7 w-7 ${i.text}`} />
-          <div className="mt-3 text-sm font-bold text-white">{i.name}</div>
-          <div className="mt-0.5 text-[10px] uppercase tracking-wider text-white/60">{i.count}+ products</div>
-        </a>
-      ))}
-    </div>
-  </section>
-);
+  const industries = useMemo(() => {
+    const counts = new Map<string, number>();
+    for (const p of data.products) {
+      if (!p.visible) continue;
+      counts.set(p.master_category, (counts.get(p.master_category) ?? 0) + 1);
+    }
+    return data.categories
+      .filter((c) => c.visible && c.featured)
+      .slice(0, 6)
+      .map((c) => ({
+        name: c.name,
+        href: `#${encodeURIComponent(c.name)}`,
+        icon: PRODUCT_ICONS[c.icon_name] ?? Sparkles,
+        gradient: c.gradient,
+        count: counts.get(c.name) ?? 0,
+      }));
+  }, [data]);
+
+  if (!industries.length) return null;
+
+  return (
+    <section className="py-8">
+      {sectionTitle("Shop by Industry", "#All", "Pre-built suites for every sector")}
+      <div className="grid grid-cols-2 gap-4 px-6 sm:grid-cols-3 lg:grid-cols-6">
+        {industries.map((i) => (
+          <a
+            key={i.name}
+            href={i.href}
+            className={`group relative overflow-hidden rounded-xl border border-white/20 bg-gradient-to-br ${i.gradient} p-4 shadow-[0_12px_30px_-14px_rgba(0,0,0,0.7)] transition-all duration-300 hover:-translate-y-1 hover:scale-[1.03] hover:border-white/40 hover:shadow-[0_22px_45px_-16px_rgba(0,0,0,0.8)]`}
+          >
+            <span className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-white/25" />
+            <span className="relative inline-flex h-10 w-10 items-center justify-center rounded-xl border border-white/30 bg-white/25 shadow-inner backdrop-blur-sm transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3">
+              <i.icon className="h-5 w-5 text-white drop-shadow" />
+            </span>
+            <div className="relative mt-3 truncate text-sm font-bold text-white drop-shadow">{i.name}</div>
+            <div className="relative mt-0.5 text-[10px] uppercase tracking-wider text-white/85">{i.count} products</div>
+          </a>
+        ))}
+      </div>
+    </section>
+  );
+};
 
 // AI Zone
 const AI_TOOLS = [
